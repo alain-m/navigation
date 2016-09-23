@@ -261,6 +261,7 @@ class AmclNode
     double init_cov_[3];
     laser_model_t laser_model_type_;
     bool tf_broadcast_;
+    bool use_augmented_mcl_;
 
     void reconfigureCB(amcl::AMCLConfig &config, uint32_t level);
 
@@ -404,6 +405,7 @@ AmclNode::AmclNode() :
   private_nh_.param("recovery_alpha_slow", alpha_slow_, 0.001);
   private_nh_.param("recovery_alpha_fast", alpha_fast_, 0.1);
   private_nh_.param("tf_broadcast", tf_broadcast_, true);
+  private_nh_.param("use_augmented_mcl", use_augmented_mcl_, true);
 
   transform_tolerance_.fromSec(tmp_tol);
 
@@ -529,6 +531,7 @@ void AmclNode::reconfigureCB(AMCLConfig &config, uint32_t level)
   alpha_slow_ = config.recovery_alpha_slow;
   alpha_fast_ = config.recovery_alpha_fast;
   tf_broadcast_ = config.tf_broadcast;
+  use_augmented_mcl_ = config.use_augmented_mcl;
 
   do_beamskip_= config.do_beamskip; 
   beam_skip_distance_ = config.beam_skip_distance; 
@@ -1231,7 +1234,7 @@ AmclNode::laserReceived(const sensor_msgs::LaserScanConstPtr& laser_scan)
     // Resample the particles
     if(!(++resample_count_ % resample_interval_))
     {
-      pf_update_resample(pf_);
+      pf_update_resample(pf_, use_augmented_mcl_);
       resampled = true;
     }
 

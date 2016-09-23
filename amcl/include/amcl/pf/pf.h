@@ -30,6 +30,7 @@
 
 #include "pf_vector.h"
 #include "pf_kdtree.h"
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -157,7 +158,7 @@ void pf_update_action(pf_t *pf, pf_action_model_fn_t action_fn, void *action_dat
 void pf_update_sensor(pf_t *pf, pf_sensor_model_fn_t sensor_fn, void *sensor_data);
 
 // Resample the distribution
-void pf_update_resample(pf_t *pf);
+void pf_update_resample(pf_t *pf, bool use_augmented_mcl);
 
 // Compute the CEP statistics (mean and variance).
 void pf_get_cep_stats(pf_t *pf, pf_vector_t *mean, double *var);

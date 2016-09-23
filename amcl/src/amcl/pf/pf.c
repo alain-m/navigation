@@ -311,7 +311,7 @@ void pf_update_sensor(pf_t *pf, pf_sensor_model_fn_t sensor_fn, void *sensor_dat
 
 
 // Resample the distribution
-void pf_update_resample(pf_t *pf)
+void pf_update_resample(pf_t *pf, bool use_augmented_mcl)
 {
   int i;
   double total;
@@ -362,8 +362,10 @@ void pf_update_resample(pf_t *pf)
   {
     sample_b = set_b->samples + set_b->sample_count++;
 
-    if(drand48() < w_diff)
+    if(use_augmented_mcl && drand48() < w_diff)
+    {
       sample_b->pose = (pf->random_pose_fn)(pf->random_pose_data);
+    }
     else
     {
       // Can't (easily) combine low-variance sampler with KLD adaptive
