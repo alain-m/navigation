@@ -138,4 +138,7 @@ if(CATKIN_ENABLE_TESTING)
 # some number of iterations of sensing and motion.
 #
 #  add_rostest(test/global_localization_stage.xml)
+
+  catkin_add_gtest(odom_motion_model_test test/odom_motion_model_test.cpp)
+  target_link_libraries(odom_motion_model_test amcl_sensors gtest_main)
 endif()

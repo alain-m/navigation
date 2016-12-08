@@ -206,6 +206,8 @@ bool AMCLOdom::UpdateAction(pf_t *pf, AMCLSensorData *data)
                                                   this->alpha2*delta_trans*delta_trans));
 
       // Apply sampled update to particle pose
+      printf("delta_trans_hat: %G, delta_rot1_hat: %G, delta_rot2_hat: %G\n",delta_trans_hat, delta_rot1_hat, delta_rot2_hat);
+      printf("sample->pose.v[0]: %G, sample->pose.v[1]: %G, sample->pose.v[2]: %G\n", sample->pose.v[0], sample->pose.v[1], sample->pose.v[2]);
       sample->pose.v[0] += delta_trans_hat * 
               cos(sample->pose.v[2] + delta_rot1_hat);
       sample->pose.v[1] += delta_trans_hat * 
